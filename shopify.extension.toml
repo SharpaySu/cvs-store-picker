@@ -1,0 +1,18 @@
+api_version = "2025-01"
+
+[[extensions]]
+name = "7-11 超商取貨門市選擇"
+handle = "cvs-store-picker"
+type = "ui_extension"
+
+  [[extensions.targeting]]
+  module = "./src/Checkout.jsx"
+  target = "purchase.checkout.delivery-address.render-after"
+
+  [extensions.capabilities]
+  # 允許擋下「繼續結帳」按鈕，直到客人選好門市為止
+  block_progress = true
+  # 允許 fetch 呼叫外部網址，抓取自動更新的門市資料
+  network_access = true
+  # 允許讀取運送地址等結帳資訊，拿來預填搜尋關鍵字
+  api_access = true

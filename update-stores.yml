@@ -1,0 +1,27 @@
+name: Update CVS store data
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # 每天 UTC 18:00（台灣時間 02:00）跑一次
+  workflow_dispatch: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 抓取並整理門市資料
+        run: node scripts/update-stores.js
+
+      - name: 提交變更
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add data/stores.json
+          git diff --cached --quiet || git commit -m "chore: update cvs stores data"
+          git push
