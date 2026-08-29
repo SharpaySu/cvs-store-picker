@@ -5,6 +5,9 @@ on:
     - cron: "0 18 * * *" # 每天 UTC 18:00（台灣時間 02:00）跑一次
   workflow_dispatch: {}
 
+permissions:
+  contents: write # 沒有這行，即使 repo 設定開了 Read and write，push 還是可能被擋下來
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -13,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: 抓取並整理門市資料
         run: node scripts/update-stores.js
